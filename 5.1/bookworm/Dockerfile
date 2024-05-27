@@ -82,11 +82,6 @@ WORKDIR /usr/src/redmine
 # https://github.com/docker-library/redmine/issues/138#issuecomment-438834176
 # (bundler needs this for running as an arbitrary user)
 ENV HOME /home/redmine
-RUN set -eux; \
-	[ ! -d "$HOME" ]; \
-	mkdir -p "$HOME"; \
-	chown redmine:redmine "$HOME"; \
-	chmod 1777 "$HOME"
 
 ENV REDMINE_VERSION 5.1.2
 ENV REDMINE_DOWNLOAD_URL https://www.redmine.org/releases/redmine-5.1.2.tar.gz
