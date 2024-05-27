@@ -13,10 +13,8 @@ ARG REDMINE_UID=999
 ARG REDMINE_GID=1000
 
 RUN deluser guest && delgroup users && \
-  addgroup --system --gid ${REDMINE_GID} redmine && \
-  adduser --gecos "redmine-${REDMINE_UID}:${REDMINE_GID}" \
-    --system --no-create-home \
-    --ingroup redmine --uid ${REDMINE_UID} redmine
+  addgroup -S -g ${REDMINE_GID} redmine && \
+  adduser -g "redmine-${REDMINE_UID}:${REDMINE_GID}" -S -H -G redmine -u ${REDMINE_UID} redmine
 
 RUN set -eux; \
 	apk add --no-cache \
