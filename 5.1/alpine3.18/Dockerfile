@@ -15,6 +15,8 @@ ARG REDMINE_GID=1000
 RUN deluser guest && delgroup users && \
   addgroup -S -g ${REDMINE_GID} redmine && \
   adduser -g "redmine-${REDMINE_UID}:${REDMINE_GID}" -S -H -G redmine -u ${REDMINE_UID} redmine
+ENV REDMINE_UID ${REDMINE_UID}
+ENV REDMINE_GID ${REDMINE_GID}
 
 RUN set -eux; \
 	apk add --no-cache \
