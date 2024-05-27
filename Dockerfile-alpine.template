@@ -3,7 +3,13 @@ FROM ruby:{{ .ruby.version }}-{{ env.variant }}
 # explicitly set uid/gid to guarantee that it won't change in the future
 # the values 999:999 are identical to the current user/group id assigned
 # alpine already has a gid 999, so we'll use the next id
-RUN addgroup -S -g 1000 redmine && adduser -S -H -G redmine -u 999 redmine
+ARG REDMINE_UID=999
+ARG REDMINE_GID=1000
+
+RUN addgroup --system --gid ${REDMINE_GID} redmine && \
+  adduser --gecos "redmine-${REDMINE_UID}:${REDMINE_GID}" \
+    --system --no-create-home \
+    --ingroup redmine --uid ${REDMINE_UID} redmine
 
 RUN set -eux; \
 	apk add --no-cache \
