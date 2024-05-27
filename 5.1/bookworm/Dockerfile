@@ -8,7 +8,18 @@ FROM ruby:3.2-slim-bookworm
 
 # explicitly set uid/gid to guarantee that it won't change in the future
 # the values 999:999 are identical to the current user/group id assigned
+ARG REDMINE_UID=999
+ARG REDMINE_GID=999
+
 RUN groupadd -r -g 999 redmine && useradd -r -g redmine -u 999 redmine
+RUN set eux; \
+  groupadd --non-unique --force --gid "${REDMINE_GID}" redmine && \
+  useradd \
+    --comment "redmine-${REDMINE_UID}:${REDMINE_GID}" \
+	--system \
+    --no-log-init --no-create-home --no-user-group \
+	--uid "${REDMINE_UID}" -g redmine redmine \
+	--groups 100
 
 RUN set -eux; \
 	apt-get update; \
