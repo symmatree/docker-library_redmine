@@ -1,0 +1,10 @@
+# Controls docker build and push logic.
+
+services:
+  redmine:
+    build:
+      context: ./5.1/alpine3.18
+      args:
+        REDMINE_UID: 1026
+        REDMINE_GID: 100
+    image: docker.local.symmatree.com/redmine:live

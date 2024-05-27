@@ -12,7 +12,8 @@ FROM ruby:3.2-alpine3.18
 ARG REDMINE_UID=999
 ARG REDMINE_GID=1000
 
-RUN addgroup --system --gid ${REDMINE_GID} redmine && \
+RUN deluser guest && delgroup users && \
+  addgroup --system --gid ${REDMINE_GID} redmine && \
   adduser --gecos "redmine-${REDMINE_UID}:${REDMINE_GID}" \
     --system --no-create-home \
     --ingroup redmine --uid ${REDMINE_UID} redmine
