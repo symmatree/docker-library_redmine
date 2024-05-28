@@ -47,11 +47,13 @@ _fix_permissions() {
 	args+=( ${args[@]:+,} '(' -type f '!' -perm 644 -exec sh -c 'chmod 644 "$@" 2>/dev/null || :' -- '{}' + ')' )
 	find "${dirs[@]}" "${args[@]}"
 }
+echo "Starting up. id -u =$(id -u) and HOME=${HOME}"
 
 # allow the container to be started with `--user`
 if [ -n "$isLikelyRedmine" ] && [ "$(id -u)" = '0' ]; then
 	_fix_permissions
 	chown redmine:redmine "${BASH_SOURCE}"
+	echo Relaunching as user redmine.
 	exec gosu redmine "$BASH_SOURCE" "$@"
 fi
 
