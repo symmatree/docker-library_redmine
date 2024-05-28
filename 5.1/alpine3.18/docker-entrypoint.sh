@@ -31,7 +31,7 @@ esac
 
 _fix_permissions() {
 	# https://www.redmine.org/projects/redmine/wiki/RedmineInstall#Step-8-File-system-permissions
-	local dirs=( config log public/plugin_assets tmp ) args=()
+	local dirs=( config log public/plugin_assets tmp  ) args=()
 	if [ "$(id -u)" = '0' ]; then
 		args+=( ${args[@]:+,} '(' '!' -user redmine -exec chown redmine:redmine '{}' + ')' )
 
@@ -51,6 +51,7 @@ _fix_permissions() {
 # allow the container to be started with `--user`
 if [ -n "$isLikelyRedmine" ] && [ "$(id -u)" = '0' ]; then
 	_fix_permissions
+	chown redmine:redmine "${BASH_SOURCE}"
 	exec su-exec redmine "$BASH_SOURCE" "$@"
 fi
 

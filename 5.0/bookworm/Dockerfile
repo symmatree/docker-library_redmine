@@ -11,7 +11,6 @@ FROM ruby:3.1-slim-bookworm
 ARG REDMINE_UID=999
 ARG REDMINE_GID=999
 
-RUN groupadd -r -g 999 redmine && useradd -r -g redmine -u 999 redmine
 RUN set eux; \
   groupadd --non-unique --force --gid "${REDMINE_GID}" redmine && \
   useradd \
