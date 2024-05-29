@@ -12,9 +12,10 @@ FROM ruby:3.1-alpine3.18
 ARG REDMINE_UID=999
 ARG REDMINE_GID=1000
 
+# guest is the only member of users, which we might need out of the way.
 RUN deluser guest && delgroup users && \
   addgroup -S -g ${REDMINE_GID} redmine && \
-  adduser -g "redmine-${REDMINE_UID}:${REDMINE_GID}" -S -G redmine -u ${REDMINE_UID} redmine
+  adduser -g "redmine-${REDMINE_UID}_${REDMINE_GID}" -D -G redmine -u ${REDMINE_UID} redmine
 ENV REDMINE_UID ${REDMINE_UID}
 ENV REDMINE_GID ${REDMINE_GID}
 
@@ -48,9 +49,6 @@ WORKDIR /usr/src/redmine
 # (bundler needs this for running as an arbitrary user)
 ENV HOME /home/redmine
 RUN set -eux; \
-	[ ! -d "$HOME" ]; \
-	mkdir -p "$HOME"; \
-	chown redmine:redmine "$HOME"; \
 	chmod 1777 "$HOME"
 
 ENV REDMINE_VERSION 5.0.8
